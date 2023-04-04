@@ -53,7 +53,6 @@ RUN rustup target add \
 ENV ANDROID_NDK_HOME="/engine/src/third_party/android_tools/ndk"
 RUN cargo install cargo-ndk
 
-# How is this supposed to call build with the correct revision?
-# COPY build.sh .
-# RUN chmod +x ./build.sh
-# ENTRYPOINT [ "/root/build.sh" ]
+COPY build.sh .
+RUN chmod +x ./build.sh
+ENTRYPOINT [ "/build.sh" ]

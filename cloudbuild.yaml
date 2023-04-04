@@ -1,0 +1,6 @@
+# This would presumably be manually triggered from shorebirdtech/engine
+# via a github actions hook? e.g.
+# gcloud builds submit --config cloudbuild.yaml https://github.com/shorebirdtech/build_engine.git
+steps:
+- name: 'gcr.io/$PROJECT_ID/build_engine'
+  args: [$COMMIT_SHA]
