@@ -2,7 +2,7 @@
 # via a github actions hook? e.g.
 # gcloud builds submit \
 #   --config cloudbuild.yaml --no-source \
-#   --subsitutions=COMMIT_SHA=79f4c5321a581f580a9bda01ec372cbf4a53aa53
+#   --substitutions=COMMIT_SHA=79f4c5321a581f580a9bda01ec372cbf4a53aa53
 steps:
 - name: 'gcr.io/$PROJECT_ID/build_engine'
   args: [$COMMIT_SHA]
