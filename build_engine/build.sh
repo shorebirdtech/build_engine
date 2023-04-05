@@ -22,6 +22,10 @@ gclient sync --revision src/flutter@$ENGINE_HASH
 
 # Build the Rust library.
 cd $UPDATER_SRC/library
+
+# Use the same NDK as the Flutter engine.
+ANDROID_NDK_HOME="/engine/src/third_party/android_tools/ndk"
+
 # Build both the arm64 and armv7 versions of the library.
 # Use -p 16 to match Flutter's minAndroidSdkVersion
 cargo ndk \
