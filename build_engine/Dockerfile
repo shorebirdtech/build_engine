@@ -7,13 +7,6 @@ FROM --platform=amd64 ubuntu:bionic AS build
 # Fix warnings related to: https://github.com/moby/moby/issues/27988
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
-# List our SSH keys, to make sure they're there:
-# RUN ls -al /workspace/root/.ssh
-RUN ls -al ~/.ssh
-
-# Test our SSH connection before continuing:
-RUN ssh -T git@github.com
-
 # Install download dependencies
 RUN apt-get update && apt-get install -y apt-utils
 RUN apt-get install -y curl git python3 python3-pip

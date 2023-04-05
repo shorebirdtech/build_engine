@@ -1,0 +1,5 @@
+# Files specified here should be ignored when building the context
+# to upload for gcloud build.  If files are added, not included in the build
+# and not listed here, they will be included in the build context and thus
+# I think can cause unnessary rebuilds?
+README.md
