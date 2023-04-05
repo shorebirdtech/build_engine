@@ -1,25 +1,8 @@
 # This would presumably be manually triggered from shorebirdtech/engine
 # via a github actions hook? e.g.
-# gcloud builds submit --config cloudbuild.yaml https://github.com/shorebirdtech/build_engine.git
-
-# Following steps to use SSH key:
-# https://cloud.google.com/build/docs/access-github-from-build#configure_the_build
+# gcloud builds submit \
+#   --config cloudbuild.yaml --no-source \
+#   --subsitutions=COMMIT_SHA=79f4c5321a581f580a9bda01ec372cbf4a53aa53
 steps:
-# Volumes don't get passed into docker, so we use /workspace/root:
-# https://stackoverflow.com/questions/64213744/google-cloud-build-using-volumes-on-dockerfile
-- name: 'gcr.io/cloud-builders/git'
-  secretEnv: ['SSH_KEY']
-  entrypoint: 'bash'
-  args:
-  - -c
-  - |
-    mkdir -p /workspace/root/.ssh
-    echo "$$SSH_KEY" >> /workspace/root/.ssh/id_rsa
-    chmod 400 /workspace/root/.ssh/id_rsa
-    cp known_hosts.github /workspace/root/.ssh/known_hosts
 - name: 'gcr.io/$PROJECT_ID/build_engine'
   args: [$COMMIT_SHA]
-availableSecrets:
-  secretManager:
-  - versionName: projects/$PROJECT_ID/secrets/github-bot-ssh/versions/latest
-    env: 'SSH_KEY'

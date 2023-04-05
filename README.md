@@ -4,7 +4,7 @@ Contains two cloudbuild scripts:
 ```
 gcloud builds submit \
   --config cloudbuild.yaml --no-source \
-  --subsitutions=COMMIT_SHA=...
+  --subsitutions=COMMIT_SHA=79f4c5321a581f580a9bda01ec372cbf4a53aa53
 ```
 
 2. build_engine/cloudbuild.yaml - builds a "build_engine" base image used by the
