@@ -68,9 +68,31 @@ ninja -C ./out/android_release_arm64
 ninja -C ./out/android_release
 
 # Copy Shorebird engine artifacts to Google Cloud Storage.
+# FIXME: This should not be in shell, it's too complicated/repetative.
 # Only need the libflutter.so (and flutter.jar) artifacts
-gsutil cp $ENGINE_OUT/android_release_arm64/zip_archives/artifact.zip gs://download.shorebird.dev/$ENGINE_HASH/
-gsutil cp $ENGINE_OUT/android_release_arm64/zip_archives/symbols.zip gs://download.shorebird.dev/$ENGINE_HASH/
+# Artifact list: https://github.com/shorebirdtech/shorebird/pull/222/commits/a1fbbf7b93029b90ebd79c9ffeaafd3ee475cf20
+gsutil cp $ENGINE_OUT/android_release_arm64/zip_archives/artifacts.zip \
+    gs://download.shorebird.dev/flutter_infra_release/flutter/$ENGINE_HASH/android-arm64-release/artifacts.zip
+gsutil cp $ENGINE_OUT/android_release_arm64/zip_archives/symbols.zip \
+    gs://download.shorebird.dev/flutter_infra_release/flutter/$ENGINE_HASH/android-arm64-release/symbols.zip
+gsutil cp $ENGINE_OUT/android_release/arm64_v8a_release.pom \
+    gs://download.shorebird.dev/flutter_infra_release/flutter/1.0.0-$ENGINE_HASH/android-arm-release/arm64_v8a_release-1.0.0-$ENGINE_HASH.pom
+gsutil cp $ENGINE_OUT/android_release/arm64_v8a_release.jar \
+    gs://download.shorebird.dev/flutter_infra_release/flutter/1.0.0-$ENGINE_HASH/android-arm-release/arm64_v8a_release-1.0.0-$ENGINE_HASH.jar
 
-gsutil cp $ENGINE_OUT/android_release/zip_archives/artifact.zip gs://download.shorebird.dev/$ENGINE_HASH/
-gsutil cp $ENGINE_OUT/android_release/zip_archives/symbols.zip gs://download.shorebird.dev/$ENGINE_HASH/
+gsutil cp $ENGINE_OUT/android_release/zip_archives/artifacts.zip \
+    gs://download.shorebird.dev/flutter_infra_release/flutter/$ENGINE_HASH/android-arm-release/artifacts.zip
+gsutil cp $ENGINE_OUT/android_release/zip_archives/symbols.zip \
+    gs://download.shorebird.dev/flutter_infra_release/flutter/$ENGINE_HASH/android-arm-release/symbols.zip
+gsutil cp $ENGINE_OUT/android_release/armeabi_v7a_release.pom \
+    gs://download.shorebird.dev/flutter_infra_release/flutter/1.0.0-$ENGINE_HASH/android-arm-release/armeabi_v7a_release-1.0.0-$ENGINE_HASH.pom
+gsutil cp $ENGINE_OUT/android_release/armeabi_v7a_release.jar \
+    gs://download.shorebird.dev/flutter_infra_release/flutter/1.0.0-$ENGINE_HASH/android-arm-release/armeabi_v7a_release-1.0.0-$ENGINE_HASH.jar
+
+# Not sure which flutter_embedding_release files to use? 32 or 64 bit?
+# It does not seem to contain the libflutter.so file, but does seem to
+# differ between the two build dirs.
+gsutil cp $ENGINE_OUT/android_release/flutter_embedding_release.pom \
+    gs://download.shorebird.dev/flutter_infra_release/flutter/1.0.0-$ENGINE_HASH/android-arm-release/flutter_embedding_release-1.0.0-$ENGINE_HASH.pom
+gsutil cp $ENGINE_OUT/android_release/flutter_embedding_release.jar \
+    gs://download.shorebird.dev/flutter_infra_release/flutter/1.0.0-$ENGINE_HASH/android-arm-release/flutter_embedding_release-1.0.0-$ENGINE_HASH.jar
