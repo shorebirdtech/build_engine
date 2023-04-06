@@ -66,6 +66,20 @@ gsutil cp $ARCH_PATH.jar $MAVEN_PATH.jar
 gsutil cp $ARCH_PATH.maven-metadata.xml $MAVEN_PATH.maven-metadata.xml
 
 
-# Patch tool
+# This is a hack.  We build/upload the Mac amr64 patch tool from this machine
+# and pull down (hopefully the correct version of) the tool from GHA.
 SHOREBIRD_ROOT=gs://download.shorebird.dev/shorebird/$ENGINE_HASH
 gsutil cp $ENGINE_OUT/host_release_arm64/patch.zip $SHOREBIRD_ROOT/patch-darwin-arm64.zip
+
+TMP_DIR=$(mktemp -d)
+
+PATCH_VERSION=0.0.0
+GH_RELEASE=https://github.com/shorebirdtech/updater/releases/download/patch-v$PATCH_VERSION/
+cd $TMP_DIR
+curl -L $GH_RELEASE/patch-x86_64-apple-darwin.zip -o patch-x86_64-apple-darwin.zip
+curl -L $GH_RELEASE/patch-x86_64-pc-windows-msvc.zip -o patch-x86_64-pc-windows-msvc.zip
+curl -L $GH_RELEASE/patch-x86_64-unknown-linux-gnu.zip -o patch-x86_64-unknown-linux-gnu.zip
+
+gsutil cp patch-x86_64-apple-darwin.zip $SHOREBIRD_ROOT/patch-darwin-x64.zip
+gsutil cp patch-x86_64-pc-windows-msvc.zip $SHOREBIRD_ROOT/patch-windows-x64.zip
+gsutil cp patch-x86_64-unknown-linux-gnu.zip $SHOREBIRD_ROOT/patch-linux-x64.zip
