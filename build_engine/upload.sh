@@ -51,3 +51,16 @@ MAVEN_PATH=$MAVEN_ROOT/flutter_embedding_release/$MAVEN_VER/flutter_embedding_re
 gsutil cp $ARCH_PATH.pom $MAVEN_PATH.pom
 gsutil cp $ARCH_PATH.jar $MAVEN_PATH.jar
 gsutil cp $ARCH_PATH.maven-metadata.xml $MAVEN_PATH.maven-metadata.xml
+
+# Android x64 release Flutter artifacts
+ARCH_OUT=$ENGINE_OUT/android_release_x64
+ZIPS_OUT=$ARCH_OUT/zip_archives/android-x64-release
+ZIPS_DEST=$INFRA_ROOT/android-x64-release
+gsutil cp $ZIPS_OUT/artifacts.zip $ZIPS_DEST/artifacts.zip
+gsutil cp $ZIPS_OUT/symbols.zip $ZIPS_DEST/symbols.zip
+# Android x64 release Maven artifacts
+ARCH_PATH=$ARCH_OUT/x86_64_release
+MAVEN_PATH=$MAVEN_ROOT/x86_64_release/$MAVEN_VER/x86_64_release-$MAVEN_VER
+gsutil cp $ARCH_PATH.pom $MAVEN_PATH.pom
+gsutil cp $ARCH_PATH.jar $MAVEN_PATH.jar
+gsutil cp $ARCH_PATH.maven-metadata.xml $MAVEN_PATH.maven-metadata.xml

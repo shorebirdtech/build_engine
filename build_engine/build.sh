@@ -73,6 +73,7 @@ ninja -C ./out/android_release
 ./flutter/tools/gn --android --android-cpu=x64 --runtime-mode=release --no-goma
 ninja -C ./out/android_release_x64
 
-# Android x86 release
-./flutter/tools/gn --android --android-cpu=x86 --runtime-mode=release --no-goma
-ninja -C ./out/android_release_x86
+# Dart doesn't allow building for x86 from a 64-bit host:
+# # Android x86 release
+# ./flutter/tools/gn --android --android-cpu=x86 --runtime-mode=release --no-goma
+# ninja -C ./out/android_release_x86
