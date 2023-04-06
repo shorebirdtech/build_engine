@@ -53,5 +53,7 @@ RUN rustup target add \
 RUN cargo install cargo-ndk
 
 COPY build.sh /
-RUN chmod +x /build.sh
-ENTRYPOINT [ "/build.sh" ]
+COPY upload.sh /
+COPY build_and_upload.sh /
+RUN chmod +x /build.sh /upload.sh /build_and_upload.sh
+ENTRYPOINT [ "/build_and_upload.sh" ]
