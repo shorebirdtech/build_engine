@@ -1,13 +1,13 @@
 #!/bin/sh -e
 
 # Usage:
-# ./build.sh git_hash [engine_path]
+# ./build.sh engine_path engine_hash
 
-ENGINE_HASH=$1
 # The path to the Flutter engine.
-ENGINE_ROOT="${2:-/engine}"
+ENGINE_ROOT=$1
+ENGINE_HASH=$2
 
-echo "Building engine at $1 and uploading to gs://$BUCKET_NAME"
+echo "Building engine at $ENGINE_ROOT and uploading to gs://download.shorebird.dev"
 
 # First update our checkouts to the correct versions.
 cd $ENGINE_ROOT
@@ -17,4 +17,4 @@ gclient sync --revision src/flutter@$ENGINE_HASH
 ./build_no_sync.sh $ENGINE_ROOT
 
 # Copy Shorebird engine artifacts to Google Cloud Storage.
-./upload.sh $ENGINE_HASH $ENGINE_ROOT
+./upload.sh $ENGINE_ROOT $ENGINE_HASH

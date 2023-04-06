@@ -1,9 +1,9 @@
 #!/bin/sh -e
 
 # Usage:
-# ./upload.sh git_hash engine_path
-ENGINE_HASH=$1
-ENGINE_ROOT=$2
+# ./upload.sh engine_path git_hash
+ENGINE_ROOT=$1
+ENGINE_HASH=$2
 
 ENGINE_SRC=$ENGINE_ROOT/src
 ENGINE_OUT=$ENGINE_SRC/out
