@@ -14,7 +14,7 @@ cd $ENGINE_ROOT
 gclient sync --revision src/flutter@$ENGINE_HASH
 
 # Then run the build (this should just be a ninja call).
-./build_no_sync.sh $ENGINE_ROOT
+./build.sh $ENGINE_ROOT
 
 # Copy Shorebird engine artifacts to Google Cloud Storage.
 ./upload.sh $ENGINE_ROOT $ENGINE_HASH
