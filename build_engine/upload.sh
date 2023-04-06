@@ -64,3 +64,8 @@ MAVEN_PATH=$MAVEN_ROOT/x86_64_release/$MAVEN_VER/x86_64_release-$MAVEN_VER
 gsutil cp $ARCH_PATH.pom $MAVEN_PATH.pom
 gsutil cp $ARCH_PATH.jar $MAVEN_PATH.jar
 gsutil cp $ARCH_PATH.maven-metadata.xml $MAVEN_PATH.maven-metadata.xml
+
+
+# Patch tool
+SHOREBIRD_ROOT=gs://download.shorebird.dev/shorebird/$ENGINE_HASH
+gsutil cp $ENGINE_OUT/host_release_arm64/patch.zip $SHOREBIRD_ROOT/patch-darwin-arm64.zip

@@ -34,24 +34,6 @@ cargo ndk \
     --target i686-linux-android \
     build --release
 
-# Patch the engine with the updater library
-# These match paths set in flutter/shell/platform/android/BUILD.gn
-UPDATER_OUT=$ENGINE_SRC/flutter/updater
-mkdir -p $UPDATER_OUT
-cp $UPDATER_SRC/library/include/updater.h $UPDATER_OUT
-
-mkdir -p $UPDATER_OUT/android_aarch64
-cp $UPDATER_SRC/target/aarch64-linux-android/release/libupdater.a $UPDATER_OUT/android_aarch64
-
-mkdir -p $UPDATER_OUT/android_arm
-cp $UPDATER_SRC/target/armv7-linux-androideabi/release/libupdater.a $UPDATER_OUT/android_arm
-
-mkdir -p $UPDATER_OUT/android_x64
-cp $UPDATER_SRC/target/x86_64-linux-android/release/libupdater.a $UPDATER_OUT/android_x64
-
-mkdir -p $UPDATER_OUT/android_x86
-cp $UPDATER_SRC/target/i686-linux-android/release/libupdater.a $UPDATER_OUT/android_x86
-
 # Build the patch tool.
 # Again, this belongs as part of the gn build.
 cd $UPDATER_SRC/patch
@@ -64,6 +46,12 @@ cd $ENGINE_SRC
 # Android arm64 release
 ./flutter/tools/gn --android --android-cpu=arm64 --runtime-mode=release --no-goma
 ninja -C ./out/android_release_arm64
+
+# Hack for now. This assumes we're building on a Mac arm64 host.
+# Again, this should be in gn (or patch itself be re-written in Dart).
+mkdir -p $ENGINE_OUT/host_release_arm64
+cp $UPDATER_SRC/target/release/patch $ENGINE_OUT/host_release_arm64/patch
+zip -j $ENGINE_OUT/host_release_arm64/patch.zip $ENGINE_OUT/host_release_arm64/patch
 
 # Android arm32 release
 ./flutter/tools/gn --android --runtime-mode=release --no-goma
