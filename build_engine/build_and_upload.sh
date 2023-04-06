@@ -7,7 +7,8 @@
 ENGINE_ROOT=$1
 ENGINE_HASH=$2
 
-SCRIPT_DIR=$(dirname "$0")
+# Get the absolute path to the directory of this script.
+SCRIPT_DIR=$(cd $(dirname $0) && pwd)
 
 echo "Building engine at $ENGINE_ROOT and uploading to gs://download.shorebird.dev"
 
