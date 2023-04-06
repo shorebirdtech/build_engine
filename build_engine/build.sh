@@ -71,28 +71,44 @@ ninja -C ./out/android_release
 # FIXME: This should not be in shell, it's too complicated/repetative.
 # Only need the libflutter.so (and flutter.jar) artifacts
 # Artifact list: https://github.com/shorebirdtech/shorebird/pull/222/commits/a1fbbf7b93029b90ebd79c9ffeaafd3ee475cf20
-gsutil cp $ENGINE_OUT/android_release_arm64/zip_archives/artifacts.zip \
-    gs://download.shorebird.dev/flutter_infra_release/flutter/$ENGINE_HASH/android-arm64-release/artifacts.zip
-gsutil cp $ENGINE_OUT/android_release_arm64/zip_archives/symbols.zip \
-    gs://download.shorebird.dev/flutter_infra_release/flutter/$ENGINE_HASH/android-arm64-release/symbols.zip
-gsutil cp $ENGINE_OUT/android_release/arm64_v8a_release.pom \
-    gs://download.shorebird.dev/flutter_infra_release/flutter/1.0.0-$ENGINE_HASH/android-arm-release/arm64_v8a_release-1.0.0-$ENGINE_HASH.pom
-gsutil cp $ENGINE_OUT/android_release/arm64_v8a_release.jar \
-    gs://download.shorebird.dev/flutter_infra_release/flutter/1.0.0-$ENGINE_HASH/android-arm-release/arm64_v8a_release-1.0.0-$ENGINE_HASH.jar
 
-gsutil cp $ENGINE_OUT/android_release/zip_archives/artifacts.zip \
-    gs://download.shorebird.dev/flutter_infra_release/flutter/$ENGINE_HASH/android-arm-release/artifacts.zip
-gsutil cp $ENGINE_OUT/android_release/zip_archives/symbols.zip \
-    gs://download.shorebird.dev/flutter_infra_release/flutter/$ENGINE_HASH/android-arm-release/symbols.zip
-gsutil cp $ENGINE_OUT/android_release/armeabi_v7a_release.pom \
-    gs://download.shorebird.dev/flutter_infra_release/flutter/1.0.0-$ENGINE_HASH/android-arm-release/armeabi_v7a_release-1.0.0-$ENGINE_HASH.pom
-gsutil cp $ENGINE_OUT/android_release/armeabi_v7a_release.jar \
-    gs://download.shorebird.dev/flutter_infra_release/flutter/1.0.0-$ENGINE_HASH/android-arm-release/armeabi_v7a_release-1.0.0-$ENGINE_HASH.jar
+INFRA_ROOT="gs://download.shorebird.dev/flutter_infra_release/flutter/$ENGINE_HASH"
+MAVEN_VER="1.0.0-$ENGINE_HASH"
+MAVEN_ROOT="gs://download.shorebird.dev/download.flutter.io/io/flutter/$MAVEN_VER"
+
+# Android Arm64 release Flutter artifacts
+ARCH_OUT=$ENGINE_OUT/android_release_arm64
+ZIPS_OUT=$ARCH_OUT/zip_archives/android-arm64-release
+gsutil cp $ZIPS_OUT/artifacts.zip \
+    $INFRA_ROOT/android-arm64-release/artifacts.zip
+gsutil cp $ZIPS_OUT/symbols.zip \
+    $INFRA_ROOT/android-arm64-release/symbols.zip
+# Android Arm64 release Maven artifacts
+ARCH_PATH=$ARCH_OUT/arm64_v8a_release
+MAVEN_PATH=$MAVEN_ROOT/android-arm64-release/arm64_v8a_release-$MAVEN_VER
+gsutil cp $ARCH_PATH.pom $MAVEN_PATH.pom
+gsutil cp $ARCH_PATH.jar $MAVEN_PATH.jar
+gsutil cp $ARCH_PATH.maven-metadata.xml $MAVEN_PATH.maven-metadata.xml
+
+# Android Arm32 release Flutter artifacts
+ARCH_OUT=$ENGINE_OUT/android_release
+ZIPS_OUT=$ARCH_OUT/zip_archives/android-arm-release
+gsutil cp $ZIPS_OUT/artifacts.zip \
+    $INFRA_ROOT/android-arm-release/artifacts.zip
+gsutil cp $ZIPS_OUT/symbols.zip \
+    $INFRA_ROOT/android-arm-release/symbols.zip
+# Android Arm32 release Maven artifacts
+ARCH_PATH=$ARCH_OUT/armeabi_v7a_release
+MAVEN_PATH=android-arm-release/armeabi_v7a_release-$MAVEN_VER
+gsutil cp $ARCH_PATH.pom $MAVEN_PATH.pom
+gsutil cp $ARCH_PATH.jar $MAVEN_PATH.jar
+gsutil cp $ARCH_PATH.maven-metadata.xml $MAVEN_PATH.maven-metadata.xml
 
 # Not sure which flutter_embedding_release files to use? 32 or 64 bit?
 # It does not seem to contain the libflutter.so file, but does seem to
 # differ between the two build dirs.
-gsutil cp $ENGINE_OUT/android_release/flutter_embedding_release.pom \
-    gs://download.shorebird.dev/flutter_infra_release/flutter/1.0.0-$ENGINE_HASH/android-arm-release/flutter_embedding_release-1.0.0-$ENGINE_HASH.pom
-gsutil cp $ENGINE_OUT/android_release/flutter_embedding_release.jar \
-    gs://download.shorebird.dev/flutter_infra_release/flutter/1.0.0-$ENGINE_HASH/android-arm-release/flutter_embedding_release-1.0.0-$ENGINE_HASH.jar
+ARCH_PATH=$ENGINE_OUT/android_release/flutter_embedding_release
+MAVEN_PATH=$MAVEN_ROOT/android-arm-release/flutter_embedding_release-$MAVEN_VER
+gsutil cp $ARCH_PATH.pom $MAVEN_PATH.pom
+gsutil cp $ARCH_PATH.jar $MAVEN_PATH.jar
+gsutil cp $ARCH_PATH.maven-metadata.xml $MAVEN_PATH.maven-metadata.xml
