@@ -8,6 +8,12 @@ ENGINE_HASH=$2
 ENGINE_SRC=$ENGINE_ROOT/src
 ENGINE_OUT=$ENGINE_SRC/out
 
+MANIFEST_FILE=`mktemp`
+# Build the artifacts manifest:
+# This is a hack, assuming we have a _shorebird checkout next to the engine.
+cd $ENGINE_ROOT/../_shorebird
+./shorebird/packages/artifact_proxy/tool/generate_manifest.sh $ENGINE_HASH > $MANIFEST_FILE
+
 # FIXME: This should not be in shell, it's too complicated/repetative.
 # Only need the libflutter.so (and flutter.jar) artifacts
 # Artifact list: https://github.com/shorebirdtech/shorebird/pull/222/commits/a1fbbf7b93029b90ebd79c9ffeaafd3ee475cf20
@@ -83,3 +89,5 @@ curl -L $GH_RELEASE/patch-x86_64-unknown-linux-gnu.zip -o patch-x86_64-unknown-l
 gsutil cp patch-x86_64-apple-darwin.zip $SHOREBIRD_ROOT/patch-darwin-x64.zip
 gsutil cp patch-x86_64-pc-windows-msvc.zip $SHOREBIRD_ROOT/patch-windows-x64.zip
 gsutil cp patch-x86_64-unknown-linux-gnu.zip $SHOREBIRD_ROOT/patch-linux-x64.zip
+
+gsutil cp $MANIFEST_FILE $SHOREBIRD_ROOT/artifacts_manifest.yaml
