@@ -10,7 +10,7 @@ ENGINE_OUT=$ENGINE_SRC/out
 ENGINE_FLUTTER=$ENGINE_SRC/flutter
 
 cd $ENGINE_FLUTTER
-# `cluter` would know how to calculate this.
+# `cutler` would know how to calculate this.
 # Can't just `git merge-base` because the engine branches for each
 # major version (e.g. 3.7, 3.8) (e.g. upstream/flutter-3.7-candidate.1)
 # but it's not clear which branch we're forked from, only that we took
