@@ -101,7 +101,4 @@ gsutil cp patch-x86_64-apple-darwin.zip $SHOREBIRD_ROOT/patch-darwin-x64.zip
 gsutil cp patch-x86_64-pc-windows-msvc.zip $SHOREBIRD_ROOT/patch-windows-x64.zip
 gsutil cp patch-x86_64-unknown-linux-gnu.zip $SHOREBIRD_ROOT/patch-linux-x64.zip
 
-# This is a hack and should be moved out of here.
-# We need to generate and upload the artifacts manifest for the engine revision in order
-# for the artifact proxy to proxy the artifacts for the new engine revision.
 gsutil cp $MANIFEST_FILE $SHOREBIRD_ROOT/artifacts_manifest.yaml
