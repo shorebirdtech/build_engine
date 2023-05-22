@@ -10,6 +10,22 @@ SHOREBIRD_ROOT=gs://$STORAGE_BUCKET/shorebird/$ENGINE_HASH
 
 ENGINE_SRC=$ENGINE_ROOT/src
 ENGINE_OUT=$ENGINE_SRC/out
+ENGINE_FLUTTER=$ENGINE_SRC/flutter
+
+cd $ENGINE_FLUTTER
+# `cutler` would know how to calculate this.
+# Can't just `git merge-base` because the engine branches for each
+# major version (e.g. 3.7, 3.8) (e.g. upstream/flutter-3.7-candidate.1)
+# but it's not clear which branch we're forked from, only that we took
+# some tag and added our commits (but we don't know what tag).
+BASE_ENGINE_TAG=`git describe --tags --abbrev=0`
+BASE_ENGINE_HASH=`git rev-parse $BASE_ENGINE_TAG`
+
+# Build the artifacts manifest:
+MANIFEST_FILE=`mktemp`
+# This is a hack, assuming we have a _shorebird checkout next to the engine.
+cd $ENGINE_ROOT/../_shorebird
+./shorebird/packages/artifact_proxy/tool/generate_manifest.sh $BASE_ENGINE_HASH > $MANIFEST_FILE
 
 # FIXME: This should not be in shell, it's too complicated/repetative.
 # Only need the libflutter.so (and flutter.jar) artifacts
@@ -88,4 +104,4 @@ gsutil cp patch-x86_64-unknown-linux-gnu.zip $SHOREBIRD_ROOT/patch-linux-x64.zip
 # This is a hack and should be moved out of here.
 # We need to generate and upload the artifacts manifest for the engine revision in order
 # for the artifact proxy to proxy the artifacts for the new engine revision.
-FLUTTER_REVISION=$(cat $ENGINE_ROOT/src/flutter/VERSION)
+gsutil cp $MANIFEST_FILE $SHOREBIRD_ROOT/artifacts_manifest.yaml
