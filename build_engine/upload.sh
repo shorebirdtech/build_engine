@@ -5,6 +5,9 @@
 ENGINE_ROOT=$1
 ENGINE_HASH=$2
 
+STORAGE_BUCKET="download.shorebird.dev"
+SHOREBIRD_ROOT=gs://$STORAGE_BUCKET/shorebird/$ENGINE_HASH
+
 ENGINE_SRC=$ENGINE_ROOT/src
 ENGINE_OUT=$ENGINE_SRC/out
 ENGINE_FLUTTER=$ENGINE_SRC/flutter
@@ -26,11 +29,11 @@ cd $ENGINE_ROOT/../_shorebird
 
 # FIXME: This should not be in shell, it's too complicated/repetative.
 # Only need the libflutter.so (and flutter.jar) artifacts
-# Artifact list: https://github.com/shorebirdtech/shorebird/pull/222/commits/a1fbbf7b93029b90ebd79c9ffeaafd3ee475cf20
+# Artifact list: https://github.com/shorebirdtech/shorebird/blob/main/packages/artifact_proxy/lib/config.dart
 
-INFRA_ROOT="gs://download.shorebird.dev/flutter_infra_release/flutter/$ENGINE_HASH"
+INFRA_ROOT="gs://$STORAGE_BUCKET/flutter_infra_release/flutter/$ENGINE_HASH"
 MAVEN_VER="1.0.0-$ENGINE_HASH"
-MAVEN_ROOT="gs://download.shorebird.dev/download.flutter.io/io/flutter"
+MAVEN_ROOT="gs://$STORAGE_BUCKET/download.flutter.io/io/flutter"
 
 # Android Arm64 release Flutter artifacts
 ARCH_OUT=$ENGINE_OUT/android_release_arm64
@@ -81,10 +84,8 @@ gsutil cp $ARCH_PATH.pom $MAVEN_PATH.pom
 gsutil cp $ARCH_PATH.jar $MAVEN_PATH.jar
 gsutil cp $ARCH_PATH.maven-metadata.xml $MAVEN_PATH.maven-metadata.xml
 
-
 # This is a hack.  We build/upload the Mac amr64 patch tool from this machine
 # and pull down (hopefully the correct version of) the tool from GHA.
-SHOREBIRD_ROOT=gs://download.shorebird.dev/shorebird/$ENGINE_HASH
 gsutil cp $ENGINE_OUT/host_release_arm64/patch.zip $SHOREBIRD_ROOT/patch-darwin-arm64.zip
 
 TMP_DIR=$(mktemp -d)
