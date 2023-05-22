@@ -2,7 +2,7 @@ solutions = [
   {
     "managed": False,
     "name": "src/flutter",
-    "url": "https://github.com/shorebirdtech/engine@stable_codepush",
+    "url": "https://github.com/shorebirdtech/engine",
     "custom_deps": {},
     "deps_file": "DEPS",
     "safesync_url": "",
