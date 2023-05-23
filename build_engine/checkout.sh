@@ -2,6 +2,8 @@
 
 # This script checks out the git repos needed to build the engine.
 # These are:
+#   https://chromium.googlesource.com/chromium/tools/depot_tools.git
+#     - This is used to check out our fork of the Flutter engine
 #   https://github.com/shorebirdtech/flutter
 #   https://github.com/shorebirdtech/engine (via gclient sync)
 #     - This contains our fork of the Flutter engine and the updater
