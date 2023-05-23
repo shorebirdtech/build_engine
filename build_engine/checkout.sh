@@ -5,8 +5,9 @@
 #   https://chromium.googlesource.com/chromium/tools/depot_tools.git
 #     - This is used to check out our fork of the Flutter engine
 #   https://github.com/shorebirdtech/build_engine/
-#     - Contains scripts required to build the engine
+#     - Scripts required to build the engine
 #   https://github.com/shorebirdtech/flutter
+#     - Our fork of Flutter.
 #   https://github.com/shorebirdtech/engine (via gclient sync)
 #     - This contains our fork of the Flutter engine and the updater
 #
