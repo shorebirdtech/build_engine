@@ -31,6 +31,9 @@ fi
 mkdir -p $CHECKOUT_ROOT
 cd $CHECKOUT_ROOT
 
+# All check_out_* functions expect that the cwd is $CHECKOUT_ROOT. They should
+# all cd back to $CHECKOUT_ROOT when they're done.
+
 check_out_depot_tools() {
     if [[ ! -d "depot_tools" ]]; then
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
