@@ -72,7 +72,7 @@ check_out_engine() {
     git checkout shorebird/main
 
     cd $CHECKOUT_ROOT/engine
-    gclient sync
+    ../depot_tools/gclient sync
 }
 
 check_out_depot_tools
