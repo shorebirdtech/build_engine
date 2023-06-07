@@ -45,7 +45,7 @@ cd $ENGINE_SRC
 
 # Android arm64 release
 ./flutter/tools/gn --android --android-cpu=arm64 --runtime-mode=release --no-goma
-ninja -C ./out/android_release_arm64
+ninja -C ./out/android_release_arm64 -j 4
 
 # Hack for now. This assumes we're building on a Mac arm64 host.
 # Again, this should be in gn (or patch itself be re-written in Dart).
@@ -55,11 +55,11 @@ zip -j $ENGINE_OUT/host_release_arm64/patch.zip $ENGINE_OUT/host_release_arm64/p
 
 # Android arm32 release
 ./flutter/tools/gn --android --runtime-mode=release --no-goma
-ninja -C ./out/android_release
+ninja -C ./out/android_release -j 4
 
 # Android x64 release
 ./flutter/tools/gn --android --android-cpu=x64 --runtime-mode=release --no-goma
-ninja -C ./out/android_release_x64
+ninja -C ./out/android_release_x64 -j 4
 
 # Dart doesn't allow building for x86 from a 64-bit host:
 # # Android x86 release
