@@ -34,6 +34,9 @@ cargo ndk \
     --target i686-linux-android \
     build --release
 
+# Build iOS
+cargo build --target aarch64-apple-ios --target x86_64-apple-ios --release
+
 # Build the patch tool.
 # Again, this belongs as part of the gn build.
 cd $UPDATER_SRC/patch
@@ -65,3 +68,14 @@ ninja -C ./out/android_release_x64
 # # Android x86 release
 # ./flutter/tools/gn --android --android-cpu=x86 --runtime-mode=release --no-goma
 # ninja -C ./out/android_release_x86
+
+# `--no-enable-unittests` is needed on Flutter 3.10.1 and 3.10.2 to avoid
+# https://github.com/flutter/flutter/issues/128135
+
+# iOS host tools
+./flutter/tools/gn --no-goma --unoptimized --runtime-mode=release --no-enable-unittests
+ninja -C out/host_release_unopt
+
+# iOS arm64 release
+./flutter/tools/gn --no-goma --unoptimized --runtime-mode=release --no-enable-unittests --ios --mac-cpu=arm64 --gn-arg='dart_force_simulator=true'
+ninja -C out/ios_release_unopt_arm64
