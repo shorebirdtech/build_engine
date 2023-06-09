@@ -102,3 +102,7 @@ gsutil cp patch-x86_64-pc-windows-msvc.zip $SHOREBIRD_ROOT/patch-windows-x64.zip
 gsutil cp patch-x86_64-unknown-linux-gnu.zip $SHOREBIRD_ROOT/patch-linux-x64.zip
 
 gsutil cp $MANIFEST_FILE $SHOREBIRD_ROOT/artifacts_manifest.yaml
+
+
+# Match the upload pattern from iOS:
+# https://github.com/flutter/engine/commit/1d7f0c66c316a37105601b13136f890f6595aebc

@@ -34,6 +34,9 @@ cargo ndk \
     --target i686-linux-android \
     build --release
 
+# Build iOS
+cargo build --target aarch64-apple-ios --target x86_64-apple-ios --release
+
 # Build the patch tool.
 # Again, this belongs as part of the gn build.
 cd $UPDATER_SRC/patch
@@ -42,6 +45,8 @@ cargo build --release
 # Compile the engine using the steps here:
 # https://github.com/flutter/flutter/wiki/Compiling-the-engine#compiling-for-android-from-macos-or-linux
 cd $ENGINE_SRC
+
+# FIXME: These build commands likely could build fewer targets.
 
 # Android arm64 release
 ./flutter/tools/gn --android --android-cpu=arm64 --runtime-mode=release --no-goma
@@ -65,3 +70,39 @@ ninja -C ./out/android_release_x64
 # # Android x86 release
 # ./flutter/tools/gn --android --android-cpu=x86 --runtime-mode=release --no-goma
 # ninja -C ./out/android_release_x86
+
+
+# We would ideally only need to build the arm64 release, but because we change
+# the commit hash for Dart, we need to build all 3 archs so that we don't
+# have a snapshot mismatch error on execution.
+
+# `--no-enable-unittests` is needed on Flutter 3.10.1 and 3.10.2 to avoid
+# https://github.com/flutter/flutter/issues/128135
+
+# We only need two targets (per the mac builders):
+# "flutter/shell/platform/darwin/ios:flutter_framework",
+# "flutter/lib/snapshot:generate_snapshot_bin"
+# https://github.com/flutter/engine/blob/main/ci/builders/mac_ios_engine.json#L139
+# https://github.com/flutter/engine/blob/main/ci/builders/README.md
+
+# iOS arm64 release
+./flutter/tools/gn --no-goma --runtime-mode=release --no-enable-unittests --ios --gn-arg='dart_force_simulator=true'
+ninja -C out/ios_release flutter/shell/platform/darwin/ios:flutter_framework flutter/lib/snapshot:generate_snapshot_bin
+
+# iOS simulator-x64 release
+./flutter/tools/gn --no-goma --runtime-mode=debug --no-enable-unittests --ios --simulator
+ninja -C out/ios_debug_sim flutter/shell/platform/darwin/ios:flutter_framework flutter/lib/snapshot:generate_snapshot_bin
+
+# iOS simulator-arm64 release
+./flutter/tools/gn --no-goma --runtime-mode=debug --no-enable-unittests --ios --simulator --simulator-cpu=arm64
+ninja -C out/ios_debug_sim_arm64 flutter/shell/platform/darwin/ios:flutter_framework flutter/lib/snapshot:generate_snapshot_bin
+
+# We have to create a composite Flutter.framework for iOS, matching what
+# the Flutter builders do:
+python3 flutter/sky/tools/create_full_ios_framework.py \
+    --dst out/release \
+    --arm64-out-dir out/ios_release \
+    --simulator-x64-out-dir out/ios_debug_sim \
+    --simulator-arm64-out-dir out/ios_debug_sim_arm64 \
+    --dsym \
+    --strip
