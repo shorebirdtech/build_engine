@@ -106,3 +106,9 @@ gsutil cp $MANIFEST_FILE $SHOREBIRD_ROOT/artifacts_manifest.yaml
 
 # Match the upload pattern from iOS:
 # https://github.com/flutter/engine/commit/1d7f0c66c316a37105601b13136f890f6595aebc
+
+# iOS release Flutter artifacts
+ARCH_OUT=$ENGINE_OUT/release
+ZIPS_OUT=$ARCH_OUT
+ZIPS_DEST=$INFRA_ROOT/ios-release
+gsutil cp $ZIPS_OUT/artifacts.zip $ZIPS_DEST/artifacts.zip
