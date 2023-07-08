@@ -90,7 +90,7 @@ gsutil cp $ENGINE_OUT/host_release_arm64/patch.zip $SHOREBIRD_ROOT/patch-darwin-
 
 TMP_DIR=$(mktemp -d)
 
-PATCH_VERSION=0.0.0
+PATCH_VERSION=0.0.1
 GH_RELEASE=https://github.com/shorebirdtech/updater/releases/download/patch-v$PATCH_VERSION/
 cd $TMP_DIR
 curl -L $GH_RELEASE/patch-x86_64-apple-darwin.zip -o patch-x86_64-apple-darwin.zip
